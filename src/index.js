@@ -20,8 +20,8 @@ const Hello = () =>
   return(
     <div>
       <h1>Hello visitor!</h1>
-      <p>You have stumbled upon a quite nerdy site. Turn away while you still
-      can!</p>
+      <p>This page contains a random assortment of things. Feel free to try them
+      out!</p>
     </div>
   )
 }
