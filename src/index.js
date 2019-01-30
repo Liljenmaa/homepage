@@ -1,28 +1,56 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './index.css'
 
-function showStuff(element)
+function randomInt(start, end)
 {
-  let info = document.getElementById(element)
-  console.log(info)
-  if (info.style.display === "none")
-  {
-    info.style.display = "block"
-  }
-  else
-  {
-    info.style.display = "none";
-  }
+  return Math.floor((end-start) * Math.random() + start)
+}
+
+const Display = ({ content }) => <div>{content}</div>
+
+const CodeDisplay = ({ data }) => <code>{data}</code>
+
+const Button = ({handleClick, text}) =>
+{
+  return(
+    <button onClick={handleClick}>
+      {text}
+      </button>
+  )
+}
+
+const PhoneButtonInterface = ({ func }) =>
+{
+  return(
+    <div>
+      <button class="phone" onClick={func(1)}>1</button>
+      <button class="phone" onClick={func(2)}>2</button>
+      <button class="phone" onClick={func(3)}>3</button>
+    <br/>
+      <button class="phone" onClick={func(4)}>4</button>
+      <button class="phone" onClick={func(5)}>5</button>
+      <button class="phone" onClick={func(6)}>6</button>
+    <br/>
+      <button class="phone" onClick={func(7)}>7</button>
+      <button class="phone" onClick={func(8)}>8</button>
+      <button class="phone" onClick={func(9)}>9</button>
+    <br/>
+      <button class="phone" onClick={func(10)}>*</button>
+      <button class="phone" onClick={func(0)}>0</button>
+      <button class="phone" onClick={func(11)}>#</button>
+    </div>
+  )
 }
 
 const Hello = () =>
 {
   return(
-    <div>
+    <header>
       <h1>Hello visitor!</h1>
       <p>This page contains a random assortment of things. Feel free to try them
       out!</p>
-    </div>
+    </header>
   )
 }
 
@@ -102,6 +130,113 @@ class DoomsDay extends React.Component
   }
 }
 
+class CrackMySafe extends React.Component
+{
+  constructor()
+  {
+    super()
+    this.state =
+    {
+      secretCode : new Array(4),
+      display: "[The safe doesn't make any noise right now.]",
+      currIndex: 0,
+      currCode: "",
+      unavailable: false
+    }
+
+    for(let i = 0; i < this.state.secretCode.length; ++i)
+    {
+      this.state.secretCode[i] = randomInt(0, 9)
+    }
+  }
+
+  render()
+  {
+    const randomizeCode = () =>
+    {
+      let x = new Array(4)
+
+      for(let i = 0; i < this.state.secretCode.length; ++i)
+      {
+        x[i] = randomInt(0,9)
+        this.setState({secretCode: x})
+      }
+
+      console.log(this.state.secretCode)
+    }
+
+    const updateDisplay = (input) => () =>
+    {
+      if (!this.state.unavailable)
+      {
+        if (input == null)
+          this.setState({
+            display: "[The safe doesn't make any noise right now.]"
+          })
+
+        else if (input === this.state.secretCode[this.state.currIndex])
+        {
+          this.setState((prevState) =>({
+            display: "Beep!",
+            currIndex: prevState.currIndex + 1,
+            currCode: prevState.currCode + input
+          }))
+
+          setTimeout(() =>
+          {
+            if (this.state.currIndex === this.state.secretCode.length)
+              this.setState({
+                display: "Congrats! Reset by pressing * or #.",
+              })
+            else
+              this.setState({ display: this.state.currCode })
+          }, 500)
+        }
+
+        else if (input === 10)
+          this.setState({
+            display: "Reset activated.",
+            currIndex: 0,
+            currCode: ""
+          })
+
+        else if (input === 11)
+        {
+          this.setState({
+            display: "Full reset activated.",
+            currIndex: 0,
+            currCode: ""
+          })
+          randomizeCode()
+        }
+
+        else if (!(this.state.currIndex === 0))
+          this.setState({
+            display: "Clank!",
+            currIndex: 0,
+            currCode: ""
+          })
+
+        else
+          this.setState({
+            display: "[The safe doesn't make any noise right now.]"
+          })
+      }
+
+    }
+
+    return(
+      <div>
+        <h2>Can you crack my safe?</h2>
+        <CodeDisplay data={this.state.display}/>
+        <br/>
+        <br/>
+        <PhoneButtonInterface func={updateDisplay}/>
+      </div>
+    )
+  }
+}
+
 const Info = () =>
 {
   return(
@@ -172,8 +307,8 @@ class CodeStuff extends React.Component
     }
   }
 
-  render(){
-
+  render()
+  {
     const counterUp = () =>
     {
       this.setState((prevState) => ({
@@ -189,14 +324,17 @@ class CodeStuff extends React.Component
     return(
       <div>
         <h2>Experimenting with stuff! Will be broken!</h2>
-        <code>{this.state.counter}</code>
-        <br></br>
-        <button id="buttonClick" onClick={counterUp}>
-          Click me!
-        </button>
-        <button id="buttonReset" onClick={counterReset}>
-          Reset
-        </button>
+        <CodeDisplay data={this.state.counter}/>
+        <div>
+          <Button
+            handleClick={counterUp}
+            text="Click me!"
+          />
+          <Button
+            handleClick={counterReset}
+            text="Reset"
+          />
+        </div>
         <p>Printing out info from CodeStuff props: {this.props.info}</p>
       </div>
     )
@@ -207,11 +345,11 @@ const Footer = () =>
 {
   console.log("I can print in the console as well!")
   return(
-    <div>
+    <footer>
       <p>This website was constructed using React! Very poorly though.</p>
         <img src="/gambler.svg" className="App-logo" alt="Gambler Logo"
           height ="75"/>
-    </div>
+    </footer>
   )
 }
 
@@ -221,6 +359,7 @@ const App = () =>
     <div>
       <Hello />
       <DoomsDay />
+      <CrackMySafe />
       <Info />
       <Knowledge />
       <GuidelinesWeb />
