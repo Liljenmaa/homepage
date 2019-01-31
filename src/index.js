@@ -1,15 +1,39 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import DoomsDay from './components/DoomsDay'
 import './index.css'
+
+const shoppingList =
+[
+  {
+    id: 0,
+    content: "Seedless grapes"
+  },
+  {
+    id: 1,
+    content: "Eucalyptus menthol candies"
+  },
+  {
+    id: 2,
+    content: "Kane's"
+  }
+]
 
 function randomInt(start, end)
 {
-  return Math.floor((end-start) * Math.random() + start)
+  return Math.floor((end-start+1) * Math.random() + start)
 }
 
-const Display = ({ content }) => <div>{content}</div>
+const ClickableListNode = ({ content, handleClick, id }) =>
+  <li>
+    <button
+      className="clickable-listnode"
+      onClick={handleClick}
+      id={id}>{content}
+    </button>
+  </li>
 
-const CodeDisplay = ({ data }) => <code>{data}</code>
+const CodeDisplay = ({ content }) => <code>{content}</code>
 
 const Button = ({handleClick, text}) =>
 {
@@ -24,21 +48,21 @@ const PhoneButtonInterface = ({ func }) =>
 {
   return(
     <div>
-      <button class="phone" onClick={func(1)}>1</button>
-      <button class="phone" onClick={func(2)}>2</button>
-      <button class="phone" onClick={func(3)}>3</button>
+      <button className="phone" onClick={func(1)}>1</button>
+      <button className="phone" onClick={func(2)}>2</button>
+      <button className="phone" onClick={func(3)}>3</button>
     <br/>
-      <button class="phone" onClick={func(4)}>4</button>
-      <button class="phone" onClick={func(5)}>5</button>
-      <button class="phone" onClick={func(6)}>6</button>
+      <button className="phone" onClick={func(4)}>4</button>
+      <button className="phone" onClick={func(5)}>5</button>
+      <button className="phone" onClick={func(6)}>6</button>
     <br/>
-      <button class="phone" onClick={func(7)}>7</button>
-      <button class="phone" onClick={func(8)}>8</button>
-      <button class="phone" onClick={func(9)}>9</button>
+      <button className="phone" onClick={func(7)}>7</button>
+      <button className="phone" onClick={func(8)}>8</button>
+      <button className="phone" onClick={func(9)}>9</button>
     <br/>
-      <button class="phone" onClick={func(10)}>*</button>
-      <button class="phone" onClick={func(0)}>0</button>
-      <button class="phone" onClick={func(11)}>#</button>
+      <button className="phone" onClick={func(10)}>*</button>
+      <button className="phone" onClick={func(0)}>0</button>
+      <button className="phone" onClick={func(11)}>#</button>
     </div>
   )
 }
@@ -47,87 +71,105 @@ const Hello = () =>
 {
   return(
     <header>
-      <h1>Hello visitor!</h1>
+      <h1>Hello visitor!<span role="img" aria-label="emoji">🖐️</span></h1>
       <p>This page contains a random assortment of things. Feel free to try them
-      out!</p>
+      out!<span role="img" aria-label="emoji">👌</span></p>
     </header>
   )
 }
 
-class DoomsDay extends React.Component
+class ShoppingList extends React.Component
 {
-  constructor()
+  constructor(props)
   {
-    super()
+    super(props)
     this.state =
     {
-      msPassed: new Date().getTime()
+      shoppingList: props.stuff,
+      idCounter: 0,
+      newItem: ""
     }
 
-    setInterval(() =>
-    {
-      this.setState({ msPassed: new Date().getTime() })
-    }, 1000)
+    this.state.idCounter = this.state.shoppingList.length
   }
 
-  render(){
+  addOne = (event) => {
+    event.preventDefault()
 
-    const maxSeconds = 0x7FFFFFFF
-    const sPassed = parseInt(this.state.msPassed / 1000)
+    if (this.state.newItem === "")
+      return
 
-    const convertToBinary = (sPassed, currNum = maxSeconds + 1) =>
+    const notDupe = (obj) => obj.content !== this.state.newItem
+
+    if (!(this.state.shoppingList.every(notDupe)))
     {
-      let returnString = ""
-
-      for(let i = 1;; ++i)
-      {
-        if (sPassed / currNum >= 1)
-        {
-          returnString += "1"
-          sPassed = sPassed % currNum
-        }
-        else
-          returnString += "0"
-
-        currNum = parseInt(currNum/2)
-
-        if (i % 4 === 0)
-          returnString += " "
-
-        if (currNum < 1)
-          return returnString
-      }
+      this.setState({ newItem: "" })
+      return
     }
 
-    const secondsLeft = maxSeconds - sPassed
-
-    const getTimeTillDoom = () =>
+    const newItem =
     {
-      let returnString = ""
-
-      const dLeft = parseInt(secondsLeft / 86400)
-      const hLeft = parseInt((secondsLeft % 86400) / 3600)
-      const mLeft = parseInt(((secondsLeft % 86400) % 3600) / 60)
-      const sLeft = parseInt(((secondsLeft % 86400) % 3600) % 60)
-
-      returnString += dLeft + " days "
-      returnString += hLeft + " hours "
-      returnString += mLeft + " minutes "
-      returnString += sLeft + " seconds "
-
-      return returnString
+      id: this.state.idCounter++,
+      content: this.state.newItem
     }
 
+    const shoppingList = this.state.shoppingList.concat(newItem)
+
+    this.setState({
+      shoppingList,
+      newItem: ""
+    })
+  }
+
+  removeOne = (event) => {
+    const shoppingList = this.state.shoppingList.filter(
+      obj => obj.id != event.target.id
+    )
+
+    this.setState({
+      shoppingList
+    })
+  }
+
+  handleItemChange = (event) => {
+    this.setState({ newItem: event.target.value })
+  }
+
+  render()
+  {
     return(
       <div>
-        <h2>DOOMSDAY</h2>
-        <p>Doomsday Countdown: {getTimeTillDoom()} till 32-bit things break!</p>
-        <p>Binary time: {convertToBinary(sPassed)}</p>
-        <p>Psst, just a tip: When the first byte turns positive, ALL HELL BREAKS
-        LOOSE!<sup> In older systems, that is.</sup></p>
+        <h2>My current shopping list</h2>
+        <p>Remove entries by clicking on them. Will not accept dupes.</p>
+        <ul>
+          {this.state.shoppingList.map(object =>
+            <ClickableListNode
+              key={object.id}
+              id={object.id}
+              content={object.content}
+              handleClick={this.removeOne}
+            />)}
+        </ul>
+        <form onSubmit={this.addOne}>
+          <input
+            value={this.state.newItem}
+            onChange={this.handleItemChange}
+          />
+          <button type="submit">Add</button>
+        </form>
       </div>
     )
   }
+}
+
+const ShoppingInterface = () =>
+{
+  return(
+    <div>
+      <h2>Shopping Interface</h2>
+      <p>Coming soon!</p>
+    </div>
+  )
 }
 
 class CrackMySafe extends React.Component
@@ -150,88 +192,81 @@ class CrackMySafe extends React.Component
     }
   }
 
+  randomizeCode = () =>
+  {
+    let x = this.state.secretCode.map(digit => randomInt(0,9))
+    this.setState({secretCode: x})
+  }
+
+  updateDisplay = (input) => () =>
+  {
+    if (!this.state.unavailable)
+    {
+      if (input == null)
+        this.setState({
+          display: "[The safe doesn't make any noise right now.]"
+        })
+
+      else if (input === this.state.secretCode[this.state.currIndex])
+      {
+        this.setState((prevState) =>({
+          display: "Beep!",
+          currIndex: prevState.currIndex + 1,
+          currCode: prevState.currCode + input
+        }))
+
+        setTimeout(() =>
+        {
+          if (this.state.currIndex === this.state.secretCode.length)
+            this.setState({
+              display: "Congrats! Reset by pressing * or #.",
+            })
+          else
+            this.setState({ display: this.state.currCode })
+        }, 500)
+      }
+
+      else if (input === 10)
+        this.setState({
+          display: "Reset activated.",
+          currIndex: 0,
+          currCode: ""
+        })
+
+      else if (input === 11)
+      {
+        this.setState({
+          display: "Full reset activated.",
+          currIndex: 0,
+          currCode: ""
+        })
+        this.randomizeCode()
+      }
+
+      else if (!(this.state.currIndex === 0))
+        this.setState({
+          display: "Clank!",
+          currIndex: 0,
+          currCode: ""
+        })
+
+      else
+        this.setState({
+          display: "[The safe doesn't make any noise right now.]"
+        })
+    }
+
+  }
   render()
   {
-    const randomizeCode = () =>
-    {
-      let x = new Array(4)
-
-      for(let i = 0; i < this.state.secretCode.length; ++i)
-      {
-        x[i] = randomInt(0,9)
-        this.setState({secretCode: x})
-      }
-
-      console.log(this.state.secretCode)
-    }
-
-    const updateDisplay = (input) => () =>
-    {
-      if (!this.state.unavailable)
-      {
-        if (input == null)
-          this.setState({
-            display: "[The safe doesn't make any noise right now.]"
-          })
-
-        else if (input === this.state.secretCode[this.state.currIndex])
-        {
-          this.setState((prevState) =>({
-            display: "Beep!",
-            currIndex: prevState.currIndex + 1,
-            currCode: prevState.currCode + input
-          }))
-
-          setTimeout(() =>
-          {
-            if (this.state.currIndex === this.state.secretCode.length)
-              this.setState({
-                display: "Congrats! Reset by pressing * or #.",
-              })
-            else
-              this.setState({ display: this.state.currCode })
-          }, 500)
-        }
-
-        else if (input === 10)
-          this.setState({
-            display: "Reset activated.",
-            currIndex: 0,
-            currCode: ""
-          })
-
-        else if (input === 11)
-        {
-          this.setState({
-            display: "Full reset activated.",
-            currIndex: 0,
-            currCode: ""
-          })
-          randomizeCode()
-        }
-
-        else if (!(this.state.currIndex === 0))
-          this.setState({
-            display: "Clank!",
-            currIndex: 0,
-            currCode: ""
-          })
-
-        else
-          this.setState({
-            display: "[The safe doesn't make any noise right now.]"
-          })
-      }
-
-    }
-
     return(
       <div>
-        <h2>Can you crack my safe?</h2>
-        <CodeDisplay data={this.state.display}/>
+        <h2>Can you crack my safe?<span role="img" aria-label="emoji">💣</span>
+          </h2>
+        <CodeDisplay content={this.state.display}/>
         <br/>
         <br/>
-        <PhoneButtonInterface func={updateDisplay}/>
+        <PhoneButtonInterface func={this.updateDisplay}/>
       </div>
     )
   }
@@ -251,6 +286,11 @@ const Info = () =>
       learned other languages through taking courses at the university, with
       some exceptions in Web Developing, which I mainly learned using tutorials
       available from <a href="https://fullstackopen.github.io">this site.</a>
+      </p>
+      <p>
+        I am also a member of <a href="https://www.mensa.fi/"
+          title="They give out a pretty cool card to put in your wallet too."
+          >a certain group of people.</a>
       </p>
       <p>
         My GitHub page: <a href="https://github.com/Liljenmaa">Liljenmaa</a>
@@ -281,7 +321,7 @@ const GuidelinesWeb = () =>
 {
   return(
     <div>
-      <h2>Some cool guidelines for Web developing if you are just starting:</h2>
+      <h2>Some cool tips for Web Developing if you are just starting:</h2>
       <ul>
         <li>Don't use var, its scope can be confusing.</li>
         <ul><li>Use let and const instead.</li></ul>
@@ -291,6 +331,25 @@ const GuidelinesWeb = () =>
         <li>Objects in Javascript are like dictionaries in Python: they contain
         a "dictionary" of name-value relations in form name: value. They can be
         really powerful!</li>
+        <li>Refactoring your code with destructuring assignments can ease the
+        pain of passing objects as arguments and creation of new objects using
+        previous objects as "mapping" targets.</li>
+        <li>Don't use an array's indexes as keys if you are mapping a new
+        array.</li>
+        <ul><li>It does a thing akin to removing an element from a
+        Python array in a for loop: everything might break.</li></ul>
+        <li>Make sure your code doesn't change the state of the component
+        directly.</li>
+        <ul><li>That means you should use setState().</li>
+        <li>Why? The component doesn't know that it should render (again),
+        so it won't.</li></ul>
+        <li>What is an "event"? Whenever a component assigns an event (such as
+        a button could assign a "onClick" function) the callback function will
+        receive as the first parameter an <a
+          href="https://reactjs.org/docs/events.html">event.</a></li>
+        <ul><li>The event will contain important info, like the DOM element
+        "target" that contains the event's DOM component. With that you can
+        access the component's different values.</li></ul>
       </ul>
     </div>
   )
@@ -324,7 +383,7 @@ class CodeStuff extends React.Component
     return(
       <div>
         <h2>Experimenting with stuff! Will be broken!</h2>
-        <CodeDisplay data={this.state.counter}/>
+        <CodeDisplay content={this.state.counter}/>
         <div>
           <Button
             handleClick={counterUp}
@@ -347,8 +406,13 @@ const Footer = () =>
   return(
     <footer>
       <p>This website was constructed using React! Very poorly though.</p>
-        <img src="/gambler.svg" className="App-logo" alt="Gambler Logo"
-          height ="75"/>
+        <a href="https://rinkkaaj.at">
+          <img src="/gambler.svg" className="App-logo"
+            title="Part of the rinkkaaj.at empire."
+            alt="Gambler logo"
+            height ="75"
+            />
+        </a>
     </footer>
   )
 }
@@ -359,6 +423,8 @@ const App = () =>
     <div>
       <Hello />
       <DoomsDay />
+      <ShoppingList stuff={shoppingList}/>
+      <ShoppingInterface />
       <CrackMySafe />
       <Info />
       <Knowledge />

@@ -26,6 +26,19 @@ code {
   width:30px;
 }
 
+button.clickable-listnode {
+  background-color: lightgrey;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+
 footer {
   font-style: italic;
   color: darkblue;
