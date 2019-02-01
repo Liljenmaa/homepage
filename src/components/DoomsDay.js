@@ -1,40 +1,33 @@
 import React from 'react'
 
-class DoomsDay extends React.Component
-{
-  constructor()
-  {
+class DoomsDay extends React.Component {
+  constructor() {
     super()
 
     this.maxSeconds = 0x7FFFFFFF
 
-    this.state =
-    {
-      msPassed: new Date().getTime(),
+    this.state = {
+      msPassed: new Date().getTime()
     }
 
-    setInterval(() =>
-    {
+    setInterval(() => {
       this.setState({ msPassed: new Date().getTime() })
     }, 1000)
   }
 
-  render(){
-
+  render() {
     const sPassed = parseInt(this.state.msPassed / 1000)
     const secondsLeft = this.maxSeconds - sPassed
 
-    const convertToBinary = (sPassed, currNum = this.maxSeconds + 1) =>
-    {
+    const convertToBinary = (sPassed, currNum = this.maxSeconds + 1) => {
       let returnString = ""
 
-      for(let i = 1;; ++i)
-      {
-        if (sPassed / currNum >= 1)
-        {
+      for(let i = 1;; ++i) {
+        if (sPassed / currNum >= 1) {
           returnString += "1"
           sPassed = sPassed % currNum
         }
+
         else
           returnString += "0"
 
@@ -48,8 +41,7 @@ class DoomsDay extends React.Component
       }
     }
 
-    const getTimeTillDoom = () =>
-    {
+    const getTimeTillDoom = () => {
       let returnString = ""
 
       const dLeft = parseInt(secondsLeft / 86400)
