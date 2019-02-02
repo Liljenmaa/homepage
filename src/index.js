@@ -30,12 +30,15 @@ const Button = ({handleClick, text}) =>
 
 const BasicForm = ({handleSubmit, inputValue, handleChange, buttonDesc }) =>
   <form
+    className="basic-form"
     onSubmit={handleSubmit}>
     <input
+      className="basic-form"
       value={inputValue}
       onChange={handleChange}
     />
     <button
+      className="basic-form"
       type="submit">
       {buttonDesc}
     </button>
@@ -168,7 +171,9 @@ class ShoppingList extends React.Component {
           shoppingList: response.data
         })
 
-        this.state.idCounter = this.state.shoppingList.length-1
+        this.setState({
+          idCounter: this.state.shoppinglist.length-1
+        })
       })
   }
 
@@ -239,6 +244,7 @@ class ShoppingList extends React.Component {
           Remove entries by clicking on them. Will not accept duplications.
         </p>
         <button
+          className="toggle-button"
           onClick={this.showItems}>
           Toggle items
         </button>
@@ -381,7 +387,7 @@ const Info = () =>
 const Knowledge = () =>
   <div>
     <h2>Coding skills:</h2>
-    <ul>
+    <ul className="top">
       <li>C (99 and forwards)</li>
       <li>C++ (03 and forwards) (fundamentals)</li>
       <li>Java</li>
@@ -395,7 +401,7 @@ const Knowledge = () =>
 const GuidelinesWeb = () =>
   <div>
     <h2>Some cool tips for Web Developing if you are just starting:</h2>
-    <ul>
+    <ul className="top">
       <li>Don't use var, its scope can be confusing.</li>
       <ul><li>Use let and const instead.</li></ul>
       <li>Don't use for-in loop like in Python, you probably don't know what
@@ -450,16 +456,14 @@ class CodeStuff extends React.Component {
         <CodeDisplay
           content={this.state.counter}
         />
-        <div>
-          <Button
+        <Button
             handleClick={counterUp}
             text="Click me!"
-          />
-          <Button
+        />
+        <Button
             handleClick={counterReset}
             text="Reset"
-          />
-        </div>
+        />
         <p>Printing out info from CodeStuff props: {this.props.info}</p>
       </div>
     )
@@ -468,15 +472,20 @@ class CodeStuff extends React.Component {
 
 const Footer = () => {
   console.log("I can print in the console as well!")
+
+  const hiddenUrl = () => window.location.href="https://rinkkaaj.at"
+
   return(
     <footer>
       <p>This website was constructed using React! Very poorly though.</p>
-        <a href="https://rinkkaaj.at">
-          <img src="/gambler.svg" className="App-logo"
-            title="Part of the rinkkaaj.at empire."
+        <a href={void(0)}
+          onClick={hiddenUrl}>
+          <img
+            src="/gambler.svg"
+            className="gambler-logo"
             alt="Gambler logo"
             height ="75"
-            />
+          />
         </a>
     </footer>
   )
