@@ -58,7 +58,7 @@ class DoomsDay extends React.Component {
     }
 
     return(
-      <div>
+      <div className="main-div">
         <h2><span role="img" aria-label="emoji">💥</span>
           DOOMSDAY<span role="img" aria-label="emoji">💥</span>
         </h2>

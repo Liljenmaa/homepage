@@ -1,6 +1,5 @@
 {
-  "shoppingList":
-  [
+  "shoppingList": [
     {
       "id": 0,
       "content": "Seedless grapes"
@@ -12,6 +11,10 @@
     {
       "id": 2,
       "content": "Kane's"
+    },
+    {
+      "id": 3,
+      "content": "jotain"
     }
   ]
 }
