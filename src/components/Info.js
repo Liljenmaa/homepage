@@ -19,7 +19,6 @@ const Info = () =>
     <p>
       I am also a member of <a href="https://www.mensa.fi/"
         target="_blank"
-        title="They give out a pretty cool card to put in your wallet too."
         >a certain group of people.</a>
     </p>
     <p>

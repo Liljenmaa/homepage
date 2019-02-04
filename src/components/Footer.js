@@ -5,7 +5,8 @@ const Footer = () => {
 
   return(
     <footer>
-        <p>This website was constructed using React! Very poorly though.</p>
+        <p>The construction of this website started from scratch
+        on the 29th of January!</p>
         <a href="https://rinkkaaj.at"
           target="_blank">
           <img

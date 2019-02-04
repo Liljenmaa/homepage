@@ -5,19 +5,24 @@
 header {
   padding: 50px;
   text-align: center;
+  background-color: purple;
+  color: white;
 }
 
 body {
   background-color: lightgrey;
-    background-image: linear-gradient(to right bottom, rgba(128,0,128,0.35) 0%, rgba(128,0,128,0.7) 100%);
+  background-image: linear-gradient(to right bottom, rgba(128,0,128,0.35) 0%, rgba(128,0,128,0.7) 100%);
   margin: 0px;
-  border: outset 10px purple;
-  padding: 20px;
+  border: solid 10px purple;
+  border-left: none;
+  border-right: none;
+  padding: 0px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-align: center;
 }
 
 code.display {
@@ -28,6 +33,54 @@ code.display {
   border-radius: 20px / 20px;
   padding: 10px;
   box-shadow: 2px 2px 2px;
+}
+
+div.main-div {
+  display: inline-block;
+  background-color: rgba(128,0,128,0.35);
+  max-width: 700px;
+  border: 1px black solid;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+a.nav-bar {
+  min-height: 50px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+div.nav-bar {
+  background-color: rgba(180, 0, 180, 0.5);
+  min-height: 50px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+button.nav-bar {
+  background-color: inherit;
+  min-height: inherit;
+  width: 15vw;
+  color: white;
+  border: none;
+}
+
+button.nav-bar:hover {
+  background-color: rgba(0, 35, 90, 1);
+}
+
+div.login-screen {
+  display: inline-block;
+  text-align: left;
+  background-color: rgba(128,0,128,0.35);
+  max-width: 700px;
+  border: 1px black solid;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 button.phone {
@@ -74,6 +127,10 @@ button.basic-form {
   border: none;
 }
 
+button.basic-form:hover {
+  background-color: rgba(180, 0, 180, 0.8)
+}
+
 button.login-confirm {
   color: white;
   background-color: purple;
@@ -87,10 +144,6 @@ button.login-confirm {
 
 button.login-confirm:hover {
   background-color: rgba(0, 35, 90, 1)
-}
-
-button.basic-form:hover {
-  background-color: rgba(180, 0, 180, 0.8)
 }
 
 button.toggle-button {
@@ -131,7 +184,7 @@ button.mode-selector-active {
 form.login-form {
   display: inline-block;
   background-color: rgba(180, 0, 180, 0.8);
-  padding: 7px;
+  padding: 14px;
   border-radius: 0px 10px 10px 10px;
   border-left: 2px white solid;
   border-bottom: 1px black solid;
@@ -143,9 +196,14 @@ label.login {
   display: inline-block;
   background-color: white;
   width: 100px;
-  padding: 5px;
-  border: 2px solid;
-  border-radius: 20px / 20px;
+  padding: 3px;
+  border: 2px solid purple;
+  margin-right: 7px;
+  border-radius: 5px;
+}
+
+ul {
+  text-align: left;
 }
 
 ul.top {
@@ -159,6 +217,7 @@ ul.top {
   padding-right: 10px;
   display: inline-block;
   box-shadow:  0 15px 30px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+  text-align: left;
 }
 
 .gambler-logo {
@@ -192,8 +251,10 @@ button {
 
 footer {
   font-style: italic;
-  background-color: ;
-  color: darkblue;
+  background-color: purple;
+  color: white;
   font-size: 15px;
   text-shadow: 1px 0px;
+  padding: 3px;
+  margin-top: 10px;
 }
