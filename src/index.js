@@ -1,40 +1,26 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import './index.css'
 import Hello from './components/Hello'
-import DoomsDay from './components/DoomsDay'
 import NavBar from './components/NavBar'
-import LoginScreen from './components/LoginScreen'
-import ShoppingList from './components/ShoppingList'
-import CurrencyQuiz from './components/CurrencyQuiz'
-import CrackMySafe from './components/CrackMySafe'
-import Info from './components/Info'
-import Knowledge from './components/Knowledge'
-import GuidelinesWeb from './components/GuidelinesWeb'
+import Home from './Home'
+import Gadgets from './Gadgets'
+import Info from './Info'
 import Footer from './components/Footer'
 
 const App = () =>
-  <div>
-    <Hello />
-    <NavBar />
-    <br/>
-    <DoomsDay />
-    <br/>
-    <LoginScreen />
-    <br/>
-    <CurrencyQuiz />
-    <br/>
-    <ShoppingList />
-    <br/>
-    <CrackMySafe />
-    <br/>
-    <Info />
-    <br/>
-    <Knowledge />
-    <br/>
-    <GuidelinesWeb />
-    <br/>
-    <Footer />
-  </div>
+  <Router>
+    <div>
+      <Hello />
+      <NavBar />
+      <br/>
+      <Route path="/home" component={Home}/>
+      <Route path="/info" component={Info}/>
+      <Route path="/gadgets" component={Gadgets}/>
+      <Route render={() => <Redirect to="/home"/>}/>
+      <Footer />
+    </div>
+  </Router>
 
 ReactDOM.render(<App />, document.getElementById('root'))

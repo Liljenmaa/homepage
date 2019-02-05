@@ -249,7 +249,8 @@ button {
   cursor: pointer;
 }
 
-footer {
+footer {  
+  width: 100%;
   font-style: italic;
   background-color: purple;
   color: white;
