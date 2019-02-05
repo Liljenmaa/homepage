@@ -20,6 +20,11 @@ class CrackMySafe extends React.Component {
       this.state.secretCode[i] = randomInt(0, 9)
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.beepUpdate)
+    clearTimeout(this.clankUpdate)
+  }
+
   randomizeCode = () => {
     let x = this.state.secretCode.map(digit => randomInt(0,9))
     this.setState({secretCode: x})
@@ -39,7 +44,7 @@ class CrackMySafe extends React.Component {
           currCode: prevState.currCode + input
         }))
 
-        setTimeout(() => {
+        this.beepUpdate = setTimeout(() => {
           if (this.state.currIndex === this.state.secretCode.length)
             this.setState({
               display: "Congrats! Reset: * or #",
@@ -72,7 +77,7 @@ class CrackMySafe extends React.Component {
           currCode: ""
         })
 
-        setTimeout(() => {
+        this.clankUpdate = setTimeout(() => {
           this.setState({
             display: "[The safe is silent.]",
           })

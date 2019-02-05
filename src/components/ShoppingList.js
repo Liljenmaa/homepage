@@ -9,24 +9,36 @@ class ShoppingList extends React.Component {
 
     this.state = {
       shoppingList: [],
-      idCounter: 0,
       newItem: "",
-      visible: true
+      visible: true,
+      serverConnection: false
     }
   }
 
+  cancelToken = axios.CancelToken;
+  source = this.cancelToken.source();
+
   componentDidMount() {
     axios
-      .get('http://localhost:3001/shoppingList')
-      .then(response => {
-        this.setState({
-          shoppingList: response.data
-        })
-
-        this.setState({
-          idCounter: this.state.shoppingList.length
-        })
+      .get('http://localhost:3001/shoppingList', {
+        cancelToken: this.source.token
       })
+      .then(response =>
+        this.setState({
+          shoppingList: response.data,
+          serverConnection: true
+        }))
+      .catch(function (thrown) {
+        if (axios.isCancel(thrown)) {
+          console.log('Request canceled', thrown.message);
+        } else {
+          console.log("Connection not established.")
+        }
+      })
+  }
+
+  componentWillUnmount() {
+    this.source.cancel()
   }
 
   addOne = (event) => {
@@ -43,28 +55,26 @@ class ShoppingList extends React.Component {
     }
 
     const newItem = {
-      id: this.state.idCounter,
       content: this.state.newItem
     }
 
-    const shoppingList = this.state.shoppingList.concat(newItem)
-
     axios
       .post('http://localhost:3001/shoppingList', newItem)
-      .catch(error =>
-        alert("Cannot connect to server. Made changes have not been applied.")
-      )
+      .then(res => this.setState({
+        shoppingList: this.state.shoppingList.concat(res.data)
+      }))
+      .catch(error => this.setState({
+        serverConnection: false
+      }))
 
-    this.setState((prevState) => ({
-      idCounter: prevState.idCounter + 1,
-      shoppingList,
+    this.setState({
       newItem: ""
-    }))
+    })
   }
 
   removeOne = (event) => {
     const shoppingList = this.state.shoppingList.filter(
-      obj => obj.id != event.target.id
+      obj => obj.id !== Number(event.target.id)
     )
 
     axios
@@ -114,6 +124,8 @@ class ShoppingList extends React.Component {
           Remove entries by clicking on them.
           Will not accept duplications.
         </p>
+        <h3>Server status: {this.state.serverConnection ?
+          "connected" : "no connection, refresh browser"}</h3>
         <button
           className="toggle-button"
           onClick={this.showItems}>

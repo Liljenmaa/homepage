@@ -1,22 +1,24 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+
 
 const NavBar = () =>
   <div className="nav-bar">
-    <a className="nav-bar" href="home">
+    <Link className="nav-bar" to="home">
       <button className="nav-bar">
         Home
       </button>
-    </a>
-    <a className="nav-bar" href="info">
+    </Link>
+    <Link className="nav-bar" to="info">
       <button className="nav-bar">
         Info
       </button>
-    </a>
-    <a className="nav-bar" href="gadgets">
+    </Link>
+    <Link className="nav-bar" to="gadgets">
       <button className="nav-bar">
         Gadgets
       </button>
-    </a>
+    </Link>
   </div>
 
 export default NavBar

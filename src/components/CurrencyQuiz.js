@@ -13,18 +13,35 @@ class CurrencyQuiz extends React.Component {
     this.state = {
       listOfCountries: [],
       currentCountry: {},
-      display: "What is the currency of ",
+      display: "Fetching data...",
       currGuess: ""
     }
   }
 
+  cancelToken = axios.CancelToken;
+  source = this.cancelToken.source();
+
   componentDidMount() {
     axios
-      .get('https://restcountries.eu/rest/v2/all')
+      .get('https://restcountries.eu/rest/v2/all', {
+        cancelToken: this.source.token
+      })
       .then(response => {
         this.setState({ listOfCountries: response.data })
         this.selectRandomCountry()
       })
+      .catch(function (thrown) {
+        if (axios.isCancel(thrown)) {
+          console.log('Request canceled', thrown.message);
+        } else {
+          this.setState({ display: "Error fetching data." })
+        }
+      })
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.countryUpdate)
+    this.source.cancel()
   }
 
   selectRandomCountry = () => {
@@ -59,7 +76,7 @@ class CurrencyQuiz extends React.Component {
         currGuess: ""
       })
 
-    setTimeout(this.selectRandomCountry, 1500)
+    this.countryUpdate = setTimeout(this.selectRandomCountry, 1500)
   }
 
   handleGuessChange = (event) =>
@@ -72,6 +89,7 @@ class CurrencyQuiz extends React.Component {
         <p>Country information taken from <a
           href="https://restcountries.eu">REST Countries</a>.
         </p>
+        <br/>
         <CodeDisplay
           content={this.state.display}
         />

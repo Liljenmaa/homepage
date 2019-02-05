@@ -10,9 +10,13 @@ class DoomsDay extends React.Component {
       msPassed: new Date().getTime()
     }
 
-    setInterval(() => {
+    this.update = setInterval(() => {
       this.setState({ msPassed: new Date().getTime() })
     }, 1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.update)
   }
 
   render() {
