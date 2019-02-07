@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const LoginForm = ({
   handleSubmit, handleUserChange, handlePassChange, handleLoginButton,
@@ -46,4 +46,4 @@ const LoginForm = ({
     </form>
   </div>
 
-export default LoginForm
+export default LoginForm;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const PhoneButtonInterface = ({ func }) =>
   <div className="phone">
@@ -19,4 +19,4 @@ const PhoneButtonInterface = ({ func }) =>
     <button className="phone" onClick={func(11)}>#</button>
   </div>
 
-export default PhoneButtonInterface
+export default PhoneButtonInterface;

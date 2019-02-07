@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const BasicForm = ({handleSubmit, inputValue, handleChange, buttonDesc }) =>
   <form
@@ -16,4 +16,4 @@ const BasicForm = ({handleSubmit, inputValue, handleChange, buttonDesc }) =>
     </button>
   </form>
 
-export default BasicForm
+export default BasicForm;

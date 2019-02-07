@@ -1,11 +1,11 @@
-import React from 'react'
-import ClickableListNode from './subcomponents/ClickableListNode'
-import BasicForm from './subcomponents/BasicForm'
-import axios from 'axios'
+import React from 'react';
+import ClickableListNode from './subcomponents/ClickableListNode';
+import BasicForm from './subcomponents/BasicForm';
+import axios from 'axios';
 
 class ShoppingList extends React.Component {
   constructor() {
-    super()
+    super();
 
     this.state = {
       shoppingList: [],
@@ -32,26 +32,26 @@ class ShoppingList extends React.Component {
         if (axios.isCancel(thrown)) {
           console.log('Request canceled', thrown.message);
         } else {
-          console.log("Connection not established.")
+          console.log("Connection not established.");
         }
       })
   }
 
   componentWillUnmount() {
-    this.source.cancel()
+    this.source.cancel();
   }
 
   addOne = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (this.state.newItem === "")
-      return
+      return;
 
-    const notDupe = (obj) => obj.content !== this.state.newItem
+    const notDupe = (obj) => obj.content !== this.state.newItem;
 
     if (!(this.state.shoppingList.every(notDupe))) {
-      this.setState({ newItem: "" })
-      return
+      this.setState({ newItem: "" });
+      return;
     }
 
     const newItem = {
@@ -69,13 +69,13 @@ class ShoppingList extends React.Component {
 
     this.setState({
       newItem: ""
-    })
+    });
   }
 
   removeOne = (event) => {
     const shoppingList = this.state.shoppingList.filter(
       obj => obj.id !== Number(event.target.id)
-    )
+    );
 
     axios
       .delete(`http://localhost:3001/shoppingList/${event.target.id}`)
@@ -83,16 +83,16 @@ class ShoppingList extends React.Component {
         alert("The item is already deleted.")
       )
 
-    this.setState({ shoppingList })
+    this.setState({ shoppingList });
   }
 
   handleItemChange = (event) =>
-    this.setState({ newItem: event.target.value })
+    this.setState({ newItem: event.target.value });
 
   showItems = () => {
     this.setState((prevState) => ({
       visible: !prevState.visible
-    }))
+    }));
   }
 
 
@@ -112,7 +112,7 @@ class ShoppingList extends React.Component {
     const toggleItemsTitle = () =>
       this.state.visible ?
         "Hide items" :
-        "Show items"
+        "Show items";
 
     return(
       <div className="main-div">
@@ -146,4 +146,4 @@ class ShoppingList extends React.Component {
   }
 }
 
-export default ShoppingList
+export default ShoppingList;

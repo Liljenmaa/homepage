@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Knowledge = () =>
   <div className="main-div">
@@ -17,4 +17,4 @@ const Knowledge = () =>
     </ul>
   </div>
 
-export default Knowledge
+export default Knowledge;

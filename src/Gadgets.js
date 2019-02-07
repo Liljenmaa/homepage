@@ -1,8 +1,8 @@
-import React from 'react'
-import ShoppingList from './components/ShoppingList'
-import CurrencyQuiz from './components/CurrencyQuiz'
-import CrackMySafe from './components/CrackMySafe'
-import Animation from './components/Animation'
+import React from 'react';
+import ShoppingList from './components/ShoppingList';
+import CurrencyQuiz from './components/CurrencyQuiz';
+import CrackMySafe from './components/CrackMySafe';
+import Animation from './components/Animation';
 
 const Gadgets = () =>
   <div className="gadgets">
@@ -15,4 +15,4 @@ const Gadgets = () =>
     <ShoppingList />
   </div>
 
-export default Gadgets
+export default Gadgets;

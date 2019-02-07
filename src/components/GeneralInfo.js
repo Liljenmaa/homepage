@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const GeneralInfo = () =>
   <div className="main-div">
@@ -26,4 +26,4 @@ const GeneralInfo = () =>
     </p>
   </div>
 
-export default GeneralInfo
+export default GeneralInfo;

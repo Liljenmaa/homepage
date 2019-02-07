@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const CodeDisplay = ({ content }) =>
   <code
@@ -6,4 +6,4 @@ const CodeDisplay = ({ content }) =>
     {content}
   </code>
 
-export default CodeDisplay
+export default CodeDisplay;

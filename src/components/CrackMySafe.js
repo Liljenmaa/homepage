@@ -1,13 +1,13 @@
-import React from 'react'
-import CodeDisplay from './subcomponents/CodeDisplay'
-import PhoneButtonInterface from './subcomponents/PhoneButtonInterface'
+import React from 'react';
+import CodeDisplay from './subcomponents/CodeDisplay';
+import PhoneButtonInterface from './subcomponents/PhoneButtonInterface';
 
 const randomInt = (start, end) =>
-  Math.floor((end-start+1) * Math.random() + start)
+  Math.floor((end-start+1) * Math.random() + start);
 
 class CrackMySafe extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
       secretCode : new Array(4),
       display: "[The safe is silent.]",
@@ -17,17 +17,17 @@ class CrackMySafe extends React.Component {
     }
 
     for(let i = 0; i < this.state.secretCode.length; ++i)
-      this.state.secretCode[i] = randomInt(0, 9)
+      this.state.secretCode[i] = randomInt(0, 9);
   }
 
   componentWillUnmount() {
-    clearTimeout(this.beepUpdate)
-    clearTimeout(this.clankUpdate)
+    clearTimeout(this.beepUpdate);
+    clearTimeout(this.clankUpdate);
   }
 
   randomizeCode = () => {
-    let x = this.state.secretCode.map(digit => randomInt(0,9))
-    this.setState({secretCode: x})
+    const x = this.state.secretCode.map(digit => randomInt(0,9));
+    this.setState({secretCode: x});
   }
 
   updateDisplay = (input) => () => {
@@ -35,23 +35,23 @@ class CrackMySafe extends React.Component {
       if (input == null)
         this.setState({
           display: "[The safe is silent.]"
-        })
+        });
 
       else if (input === this.state.secretCode[this.state.currIndex]) {
         this.setState((prevState) => ({
           display: "Beep!",
           currIndex: prevState.currIndex + 1,
           currCode: prevState.currCode + input
-        }))
+        }));
 
         this.beepUpdate = setTimeout(() => {
           if (this.state.currIndex === this.state.secretCode.length)
             this.setState({
               display: "Congrats! Reset: * or #",
-            })
+            });
           else
-            this.setState({ display: this.state.currCode })
-        }, 500)
+            this.setState({ display: this.state.currCode });
+        }, 500);
       }
 
       else if (input === 10)
@@ -59,15 +59,15 @@ class CrackMySafe extends React.Component {
           display: "Reset activated.",
           currIndex: 0,
           currCode: ""
-        })
+        });
 
       else if (input === 11) {
         this.setState({
           display: "Full reset activated.",
           currIndex: 0,
           currCode: ""
-        })
-        this.randomizeCode()
+        });
+        this.randomizeCode();
       }
 
       else if (!(this.state.currIndex === 0)) {
@@ -75,19 +75,19 @@ class CrackMySafe extends React.Component {
           display: "Clank!",
           currIndex: 0,
           currCode: ""
-        })
+        });
 
         this.clankUpdate = setTimeout(() => {
           this.setState({
             display: "[The safe is silent.]",
-          })
-        }, 500)
+          });
+        }, 500);
       }
 
       else
         this.setState({
           display: "[The safe is silent.]"
-        })
+        });
       }
     }
 
@@ -109,4 +109,4 @@ class CrackMySafe extends React.Component {
   }
 }
 
-export default CrackMySafe
+export default CrackMySafe;

@@ -1,14 +1,14 @@
-import React from 'react'
-import CodeDisplay from './subcomponents/CodeDisplay'
-import BasicForm from './subcomponents/BasicForm'
-import axios from 'axios'
+import React from 'react';
+import CodeDisplay from './subcomponents/CodeDisplay';
+import BasicForm from './subcomponents/BasicForm';
+import axios from 'axios';
 
 const randomInt = (start, end) =>
-  Math.floor((end-start+1) * Math.random() + start)
+  Math.floor((end-start+1) * Math.random() + start);
 
 class CurrencyQuiz extends React.Component {
   constructor() {
-    super()
+    super();
 
     this.state = {
       listOfCountries: [],
@@ -27,43 +27,43 @@ class CurrencyQuiz extends React.Component {
         cancelToken: this.source.token
       })
       .then(response => {
-        this.setState({ listOfCountries: response.data })
-        this.selectRandomCountry()
+        this.setState({ listOfCountries: response.data });
+        this.selectRandomCountry();
       })
       .catch(function (thrown) {
         if (axios.isCancel(thrown)) {
           console.log('Request canceled', thrown.message);
         } else {
-          this.setState({ display: "Error fetching data." })
+          this.setState({ display: "Error fetching data." });
         }
       })
   }
 
   componentWillUnmount() {
-    clearInterval(this.countryUpdate)
-    this.source.cancel()
+    clearInterval(this.countryUpdate);
+    this.source.cancel();
   }
 
   selectRandomCountry = () => {
-    const random = randomInt(0, this.state.listOfCountries.length-1)
-    const selectedCountry = this.state.listOfCountries[random]
+    const random = randomInt(0, this.state.listOfCountries.length-1);
+    const selectedCountry = this.state.listOfCountries[random];
 
     this.setState({
       currentCountry: selectedCountry,
       display: `What is the currency of ${selectedCountry.name}?`,
-    })
+    });
   }
 
   checkAnswer = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const allWrong = () =>
       this.state.currentCountry.currencies.every((currency) => {
-        const splitCurrency = currency.name.split(" ")
-        const actualCurrency = splitCurrency[splitCurrency.length-1]
+        const splitCurrency = currency.name.split(" ");
+        const actualCurrency = splitCurrency[splitCurrency.length-1];
 
         return actualCurrency.toLowerCase() !==
-          this.state.currGuess.toLowerCase()
+          this.state.currGuess.toLowerCase();
       })
 
     allWrong() ?
@@ -74,13 +74,13 @@ class CurrencyQuiz extends React.Component {
       this.setState({
         display: "That's correct!",
         currGuess: ""
-      })
+      });
 
-    this.countryUpdate = setTimeout(this.selectRandomCountry, 1500)
+    this.countryUpdate = setTimeout(this.selectRandomCountry, 1500);
   }
 
   handleGuessChange = (event) =>
-    this.setState({ currGuess: event.target.value })
+    this.setState({ currGuess: event.target.value });
 
   render() {
     return(
@@ -105,4 +105,4 @@ class CurrencyQuiz extends React.Component {
   }
 }
 
-export default CurrencyQuiz
+export default CurrencyQuiz;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const GuidelinesWeb = () =>
   <div className="main-div">
@@ -34,4 +34,4 @@ const GuidelinesWeb = () =>
     </ul>
   </div>
 
-  export default GuidelinesWeb
+  export default GuidelinesWeb;

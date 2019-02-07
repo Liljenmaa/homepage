@@ -31,7 +31,7 @@ class Animation extends React.Component {
     this.setState((prevState) => ({
       drawX: prevState.drawX + prevState.horDirection,
       drawY: prevState.drawY + prevState.verDirection
-    }))
+    }));
 
     if(
       this.state.drawX === WIDTH - this.state.marginX &&
@@ -41,7 +41,7 @@ class Animation extends React.Component {
           horDirection: 0,
           verDirection: 1,
           bounces: 1
-        })
+        });
       }
 
     if(
@@ -52,7 +52,7 @@ class Animation extends React.Component {
           horDirection: -1,
           verDirection: 0,
           bounces: 2
-        })
+        });
       }
 
     if(
@@ -64,7 +64,7 @@ class Animation extends React.Component {
           verDirection: -1,
           bounces: 3,
           marginY: prevState.marginY + 10
-        }))
+        }));
       }
 
     if(
@@ -76,7 +76,7 @@ class Animation extends React.Component {
           verDirection: 0,
           bounces: 0,
           marginX: prevState.marginX + 10
-        }))
+        }));
       }
 
     this.rAF = requestAnimationFrame(this.updateAnimationState);
@@ -114,4 +114,4 @@ class Spiral extends React.Component {
   }
 }
 
-export default Animation
+export default Animation;

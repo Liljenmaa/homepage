@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Hello = () =>
   <header>
@@ -8,4 +8,4 @@ const Hello = () =>
     out!<span role="img" aria-label="emoji">👌</span></p>
   </header>
 
-export default Hello
+export default Hello;

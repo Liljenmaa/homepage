@@ -1,13 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-import './index.css'
-import Hello from './components/Hello'
-import NavBar from './components/NavBar'
-import Home from './Home'
-import Gadgets from './Gadgets'
-import Info from './Info'
-import Footer from './components/Footer'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import './index.css';
+import Hello from './components/Hello';
+import NavBar from './components/NavBar';
+import Home from './Home';
+import Gadgets from './Gadgets';
+import Info from './Info';
+import Footer from './components/Footer';
 
 const App = () =>
   <Router>
@@ -23,4 +23,4 @@ const App = () =>
     </div>
   </Router>
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'));

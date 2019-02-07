@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const ClickableListNode = ({ content, handleClick, id }) =>
   <li>
@@ -10,4 +10,4 @@ const ClickableListNode = ({ content, handleClick, id }) =>
     </button>
   </li>
 
-export default ClickableListNode
+export default ClickableListNode;

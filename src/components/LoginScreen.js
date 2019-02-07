@@ -1,9 +1,9 @@
-import React from 'react'
-import LoginForm from './subcomponents/LoginForm'
+import React from 'react';
+import LoginForm from './subcomponents/LoginForm';
 
 class LoginScreen extends React.Component {
   constructor() {
-    super()
+    super();
 
     this.state = {
       currUsername: "",
@@ -13,34 +13,34 @@ class LoginScreen extends React.Component {
   }
 
   handleSubmit = (event) => {
-    event.preventDefault()
-    console.log("Submitted")
+    event.preventDefault();
+    console.log("Submitted");
 
     this.setState({
       currUsername: "",
       currPassword: ""
-    })
+    });
   }
 
   handleUserChange = (event) =>
     this.setState({
       currUsername: event.target.value
-    })
+    });
 
   handlePassChange = (event) =>
     this.setState({
       currPassword: event.target.value
-    })
+    });
 
   handleRegisterButton = (event) =>
     this.setState({
       loginMode: false
-    })
+    });
 
   handleLoginButton = (event) =>
     this.setState({
       loginMode: true
-    })
+    });
 
   render() {
     return(
@@ -60,4 +60,4 @@ class LoginScreen extends React.Component {
   }
 }
 
-export default LoginScreen
+export default LoginScreen;
