@@ -1,7 +1,7 @@
 import React from 'react';
 
 const GuidelinesWeb = () =>
-  <div className="main-div">
+  <div className="main-wrapper">
     <h2>Some cool tips for Web Developing if you are just starting:</h2>
     <ul className="top">
       <li>Don't use var, its scope can be confusing.</li>

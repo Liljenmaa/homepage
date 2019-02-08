@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Knowledge = () =>
-  <div className="main-div">
+  <div className="main-wrapper">
     <h2>Coding skills:</h2>
     <ul className="top">
       <li>C (99 and forwards)</li>

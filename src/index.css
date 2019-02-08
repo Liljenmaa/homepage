@@ -35,7 +35,7 @@ code.display {
   box-shadow: 2px 2px 2px;
 }
 
-div.main-div {
+div.main-wrapper {
   display: inline-block;
   background-color: rgba(128,0,128,0.35);
   max-width: 700px;

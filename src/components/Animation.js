@@ -100,7 +100,7 @@ class Spiral extends React.Component {
 
   render() {
     return(
-      <div className="main-div">
+      <div className="main-wrapper">
         <h2>Filling Spiral</h2>
         <p>Uses Animation Frames, so it shouldn't lag on mobile.</p>
         <canvas

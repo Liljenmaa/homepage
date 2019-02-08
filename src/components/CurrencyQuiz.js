@@ -84,9 +84,9 @@ class CurrencyQuiz extends React.Component {
 
   render() {
     return(
-      <div className="main-div">
+      <div className="main-wrapper">
         <h2> Currency Quiz! </h2>
-        <p>Country information taken from <a
+        <p>Country information taken from<a
           href="https://restcountries.eu">REST Countries</a>.
         </p>
         <br/>

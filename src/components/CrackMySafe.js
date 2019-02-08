@@ -93,7 +93,7 @@ class CrackMySafe extends React.Component {
 
   render() {
     return(
-      <div className="main-div">
+      <div className="main-wrapper">
         <h2>Can you crack my safe?<span role="img" aria-label="emoji">💣</span>
         </h2>
         <CodeDisplay

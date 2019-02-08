@@ -115,7 +115,7 @@ class ShoppingList extends React.Component {
         "Show items";
 
     return(
-      <div className="main-div">
+      <div className="main-wrapper">
         <h2>
           My current shopping list
         </h2>

@@ -62,13 +62,13 @@ class DoomsDay extends React.Component {
     }
 
     return(
-      <div className="main-div">
+      <div className="main-wrapper">
         <h2><span role="img" aria-label="emoji">💥</span>
           DOOMSDAY<span role="img" aria-label="emoji">💥</span>
         </h2>
         <p>Doomsday Countdown: {getTimeTillDoom()} till 32-bit things break!</p>
         <p>Binary time: {convertToBinary(sPassed)}</p>
-        <p>Psst, just a tip: When the first byte turns positive, ALL HELL BREAKS
+        <p>Psst, just a tip: When the first bit turns positive, ALL HELL BREAKS
         LOOSE!<sup> In older systems, that is.</sup></p>
       </div>
     )
