@@ -12,13 +12,15 @@ import Footer from './components/Footer';
 const App = () =>
   <Router>
     <div>
-      <Hello />
-      <NavBar />
-      <br/>
-      <Route path="/home" component={Home}/>
-      <Route path="/info" component={Info}/>
-      <Route path="/gadgets" component={Gadgets}/>
-      <Route render={() => <Redirect to="/home"/>}/>
+      <div id="content">
+        <Hello />
+        <NavBar />
+        <br/>
+        <Route path="/home" component={Home}/>
+        <Route path="/info" component={Info}/>
+        <Route path="/gadgets" component={Gadgets}/>
+        <Route render={() => <Redirect to="/home"/>}/>
+      </div>
       <Footer />
     </div>
   </Router>

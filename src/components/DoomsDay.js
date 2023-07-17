@@ -53,9 +53,9 @@ class DoomsDay extends React.Component {
       const mLeft = parseInt(((secondsLeft % 86400) % 3600) / 60);
       const sLeft = parseInt(((secondsLeft % 86400) % 3600) % 60);
 
-      returnString += dLeft + " days ";
-      returnString += hLeft + " hours ";
-      returnString += mLeft + " minutes ";
+      returnString += dLeft + " days, ";
+      returnString += hLeft + " hours, ";
+      returnString += mLeft + " minutes and ";
       returnString += sLeft + " seconds ";
 
       return returnString;
@@ -68,8 +68,8 @@ class DoomsDay extends React.Component {
         </h2>
         <p>Doomsday Countdown: {getTimeTillDoom()} till 32-bit things break!</p>
         <p>Binary time: {convertToBinary(sPassed)}</p>
-        <p>Psst, just a tip: When the first bit turns positive, ALL HELL BREAKS
-        LOOSE!<sup> In older systems, that is.</sup></p>
+        <p>Psst, just a tip: When the first bit turns positive, all hell breaks
+        loose!<sup> In older systems, that is.</sup></p>
       </div>
     )
   }

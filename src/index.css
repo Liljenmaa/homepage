@@ -23,6 +23,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 code.display {
@@ -37,7 +40,7 @@ code.display {
 
 div.main-wrapper {
   display: inline-block;
-  background-color: rgba(128,0,128,0.35);
+  background-color: rgba(128,0,128,0.20);
   max-width: 700px;
   border: 1px black solid;
   margin: 20px;
@@ -210,7 +213,7 @@ ul {
 
 ul.top {
   background-color: lightgrey;
-  background-image: linear-gradient(to right, rgba(90,0,128,0.35) 30%, rgba(90,0,128,0.7) 70%);
+  background-image: linear-gradient(to right, rgba(90,0,128,0.35) 30%, rgba(90,0,128,0.555) 70%);
   border-style: solid;
   border-radius: 10px;
   border-width: 2px;
@@ -268,5 +271,16 @@ footer {
   font-size: 15px;
   text-shadow: 1px 0px;
   padding: 3px;
-  margin-top: 10px;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
+}
+
+#root {
+  position: relative;
+  min-height: 100vh;
+}
+
+#content {
+  padding-bottom: 150px;
 }

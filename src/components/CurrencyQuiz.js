@@ -23,7 +23,7 @@ class CurrencyQuiz extends React.Component {
 
   componentDidMount() {
     axios
-      .get('https://restcountries.eu/rest/v2/all', {
+      .get('https://restcountries.com/v3.1/all', {
         cancelToken: this.source.token
       })
       .then(response => {
@@ -50,29 +50,37 @@ class CurrencyQuiz extends React.Component {
 
     this.setState({
       currentCountry: selectedCountry,
-      display: `What is the currency of ${selectedCountry.name}?`,
+      display: `What is the currency of ${selectedCountry.name.common}?`,
     });
   }
 
   checkAnswer = (event) => {
     event.preventDefault();
 
-    const allWrong = () =>
-      this.state.currentCountry.currencies.every((currency) => {
+    const getRightAnswers = () => {
+      const rightAnswers = [];
+
+      for (const currency of Object.values(this.state.currentCountry.currencies)) {
         const splitCurrency = currency.name.split(" ");
-        const actualCurrency = splitCurrency[splitCurrency.length-1];
+        const actualCurrency = splitCurrency[splitCurrency.length - 1];
 
-        return actualCurrency.toLowerCase() !==
-          this.state.currGuess.toLowerCase();
-      })
+        rightAnswers.push(actualCurrency.toLowerCase());
+      }
 
-    allWrong() ?
+      return rightAnswers;
+    }
+
+    const rightGuess = (rightAnswers) => {
+      return rightAnswers.includes(this.state.currGuess.toLowerCase());
+    }
+
+    rightGuess(getRightAnswers()) ?
       this.setState({
-        display: "I'm afraid that's wrong.",
+        display: "That's correct!",
         currGuess: ""
       }) :
       this.setState({
-        display: "That's correct!",
+        display: "Nope! The correct answer was " + getRightAnswers() + ".",
         currGuess: ""
       });
 
@@ -86,8 +94,8 @@ class CurrencyQuiz extends React.Component {
     return(
       <div className="main-wrapper">
         <h2> Currency Quiz! </h2>
-        <p>Country information taken from<a
-          href="https://restcountries.eu">REST Countries</a>.
+        <p>Country information taken from <a
+          href="https://restcountries.com">REST Countries</a>.
         </p>
         <br/>
         <CodeDisplay

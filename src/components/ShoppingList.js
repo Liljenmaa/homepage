@@ -20,7 +20,7 @@ class ShoppingList extends React.Component {
 
   componentDidMount() {
     axios
-      .get('http://localhost:3001/shoppingList', {
+      .get('https://lilj.fi/shoppingList', {
         cancelToken: this.source.token
       })
       .then(response =>
@@ -59,7 +59,7 @@ class ShoppingList extends React.Component {
     }
 
     axios
-      .post('http://localhost:3001/shoppingList', newItem)
+      .post('https://lilj.fi/shoppingList', newItem)
       .then(res => this.setState({
         shoppingList: this.state.shoppingList.concat(res.data)
       }))
@@ -78,7 +78,7 @@ class ShoppingList extends React.Component {
     );
 
     axios
-      .delete(`http://localhost:3001/shoppingList/${event.target.id}`)
+      .delete(`https://lilj.fi/shoppingList/${event.target.id}`)
       .catch(error =>
         alert("The item is already deleted.")
       )
@@ -122,7 +122,7 @@ class ShoppingList extends React.Component {
         <p>
           This list is connected to my server.
           Remove entries by clicking on them.
-          Will not accept duplications.
+          Will not accept duplicates.
         </p>
         <h3>Server status: {this.state.serverConnection ?
           "connected" : "no connection, refresh browser"}</h3>
