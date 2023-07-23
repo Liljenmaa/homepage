@@ -1,10 +1,12 @@
 import React from 'react';
 import DoomsDay from './components/DoomsDay';
-import LoginScreen from './components/LoginScreen';
+import Yahtzee from './components/Yahtzee';
 
 const Home = () =>
   <div className="home">
     <DoomsDay />
+    <br/>
+    <Yahtzee />
     <br/>
   </div>
 
