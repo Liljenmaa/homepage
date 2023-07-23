@@ -717,7 +717,7 @@ class Yahtzee extends React.Component {
           <p>Click on the Dice Cup to roll or reroll dice. Three rolls total!</p>
           <p>Click on dice to lock or unlock them. Only unlocked dice will be rerolled.</p>
           <p>Click on a field in the score sheet to score it. You can score a field only once!</p>
-          <p>Game ends when all fields have been scored. Highest total wins!</p>
+          <p>Game ends when all fields have been scored. Aim to score a high total!</p>
           <p>Explanations for the fields and more detailed rules are available <a target="_blank" rel="noopener noreferrer"href="https://en.wikipedia.org/wiki/Yahtzee#Rules">over here</a>.</p>
         </div>
       </div>
