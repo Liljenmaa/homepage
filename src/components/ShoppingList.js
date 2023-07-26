@@ -20,7 +20,7 @@ class ShoppingList extends React.Component {
 
   componentDidMount() {
     axios
-      .get('https://lilj.fi/shoppingList', {
+      .get('https://lilj.fi/api/shoppingList', {
         cancelToken: this.source.token
       })
       .then(response =>
@@ -59,7 +59,7 @@ class ShoppingList extends React.Component {
     }
 
     axios
-      .post('https://lilj.fi/shoppingList', newItem)
+      .post('https://lilj.fi/api/shoppingList', newItem)
       .then(res => this.setState({
         shoppingList: this.state.shoppingList.concat(res.data)
       }))
@@ -78,7 +78,7 @@ class ShoppingList extends React.Component {
     );
 
     axios
-      .delete(`https://lilj.fi/shoppingList/${event.target.id}`)
+      .delete(`https://lilj.fi/api/shoppingList/${event.target.id}`)
       .catch(error =>
         alert("The item is already deleted.")
       )
