@@ -1,8 +1,10 @@
 import React from 'react';
+import BasicForm from './subcomponents/BasicForm';
 import YahtzeeDie from './subcomponents/YahtzeeDie';
 import YahtzeeTitle from './subcomponents/YahtzeeTitle';
 import YahtzeeRow from './subcomponents/YahtzeeRow';
 import YahtzeeRowInfo from './subcomponents/YahtzeeRowInfo';
+import axios from 'axios';
 
 class Die {
   constructor(id, number) {
@@ -17,8 +19,11 @@ class Yahtzee extends React.Component {
 
     this.state = {
       diceImgs: [],
+      highscores: [],
+      nick: "",
       comment: "Wanna have a match? Start by rolling the dice.",
       showFinalScore: false,
+      allowHighscoreSubmit: false,
       scoringNotAllowed: true,
       hideDice: true,
       lockedDice: [],
@@ -42,7 +47,15 @@ class Yahtzee extends React.Component {
     }
 
     this.preloadDiceImages();
+    this.fetchHighscores();
   }
+
+  componentWillUnmount() {
+    this.source.cancel();
+  }
+
+  cancelToken = axios.CancelToken;
+  source = this.cancelToken.source();
 
   preloadDiceImages = () => {
     const fakeDice = [];
@@ -57,11 +70,28 @@ class Yahtzee extends React.Component {
     this.state.diceImgs = fakeDice;
   }
 
+  fetchHighscores = () => {
+    axios
+      .get('https://lilj.fi/api/highscores', {
+        cancelToken: this.source.token
+      })
+      .then(response =>
+        this.setState({ highscores: response.data.splice(0, 5) }))
+      .catch(function (thrown) {
+        if (axios.isCancel(thrown)) {
+          console.log('Request canceled', thrown.message);
+        } else {
+          console.log("Connection not established.");
+        }
+      })
+  }
+
   resetGame = () => {
     this.setState({
       comment: "Have fun!",
       showFinalScore: false,
       scoringNotAllowed: true,
+      allowHighscoreSubmit: false,
       hideDice: true,
       lockedDice: [],
       freeDice: [new Die(0, 1), new Die(1, 1), new Die(2, 1), new Die(3, 1), new Die(4, 1)],
@@ -434,6 +464,35 @@ class Yahtzee extends React.Component {
     return this.determineUpperSectionTotalScore() + this.determineLowerSectionScore();
   }
 
+  determineHighscoreDisplay = () => {
+    return this.state.showFinalScore ?
+      this.state.allowHighscoreSubmit ?
+        "final-score-full" :
+        "final-score-half" :
+        "final-score-none";
+  }
+
+  handleNickChange = (event) => {
+    this.setState({ nick: event.target.value.slice(0, 3).toUpperCase() });
+  }
+
+  postHighscore = (event) => {
+    event.preventDefault();
+
+    const nick = this.state.nick;
+    const score = this.determineGrandTotalScore();
+    const highscore = { nick, score };
+
+    axios
+      .post('https://lilj.fi/api/highscores', highscore)
+      .then(_ => {
+        this.fetchHighscores();
+        this.setState({ comment: "Highscore saved! Start a new game by rolling.", allowHighscoreSubmit: false });
+      })
+      .catch(error => console.log(error));
+
+  }
+
   checkGameEnd = () => {
     if (
       this.state.ones !== null &&
@@ -450,7 +509,20 @@ class Yahtzee extends React.Component {
       this.state.yahtzee !== null &&
       this.state.chance !== null
     ) {
-      this.setState({ comment: "Game completed! Start a new one by rolling.", showFinalScore: true });
+      if (this.state.highscores.length < 5 || this.state.highscores.at(4).score < this.determineGrandTotalScore()) {
+        this.setState({
+          comment: "New highscore! Insert your three letter nick to be placed in the highscores.",
+          showFinalScore: true,
+          allowHighscoreSubmit: true
+        });
+      }
+
+      else {
+        this.setState({
+          comment: "Aw shucks! You didn't qualify for the top 5. Click on the cup to start again.",
+          showFinalScore: true
+        });
+      }
     }
   }
 
@@ -550,7 +622,25 @@ class Yahtzee extends React.Component {
       <div className="main-wrapper width-exception">
         <h2>Yahtzee</h2>
         <p>{this.state.comment}</p>
-        <h3 className={this.state.showFinalScore ? "final-score-shown" : "final-score-disappear"}>Final Score: {this.determineGrandTotalScore()}</h3>
+        <div className={this.determineHighscoreDisplay()}>
+          <h3 className="highscore-header">Final Score: {this.determineGrandTotalScore()}</h3>
+          <div className="highscores">
+            { this.state.highscores.map((hs, idx) => (
+                <p className="highscore">
+                  <span><b>{idx + 1}.</b></span>
+                  <span><b>{hs.nick}</b></span>
+                  <span><b>{hs.score.toString().padStart(3, "0")}</b></span>
+                </p>
+              ))
+            }
+          </div>
+          <BasicForm
+            handleSubmit={this.postHighscore}
+            inputValue={this.state.nick}
+            handleChange={this.handleNickChange}
+            buttonDesc="Submit"
+          />
+        </div>
         <div className="yahtzee">
           <div className="dice-areas">
             <div className="diceholder">

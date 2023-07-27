@@ -292,23 +292,45 @@ footer {
 .yahtzee {
   display: flex;
   flex-direction: row;
+  padding-top: 15px;
   caret-color: transparent;
 }
 
-.final-score-shown {
-  height: 20px;
-  margin: 0px;
-  padding-bottom: 20px;
+.final-score-full {
+  height: 180px;
   overflow: hidden;
-  transition: height 0.5s, padding-bottom 0.5s;
+  transition: height 0.5s;
 }
 
-.final-score-disappear {
-  height: 0px;
-  margin: 0px;
-  padding: 0px;
+.final-score-half {
+  height: 130px;
   overflow: hidden;
-  transition: height 0.5s, padding-bottom 0.5s;
+  transition: height 0.5s;
+}
+
+.final-score-none {
+  height: 0px;
+  overflow: hidden;
+  transition: height 0.5s;
+}
+
+.highscore-header {
+  margin: 0px;
+  padding-bottom: 10px;
+}
+
+.highscores {
+  margin: auto;
+  font-family: monospace;
+  font-size: 15px;
+  width: 230px;
+  padding-bottom: 10px;
+}
+
+.highscore {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px;
 }
 
 .dice-areas {
