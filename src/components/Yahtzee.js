@@ -20,6 +20,7 @@ class Yahtzee extends React.Component {
     this.state = {
       diceImgs: [],
       highscores: [],
+      playable: true,
       nick: "",
       comment: "Wanna have a match? Start by rolling the dice.",
       showFinalScore: false,
@@ -50,8 +51,23 @@ class Yahtzee extends React.Component {
     this.fetchHighscores();
   }
 
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize.bind(this));
+    this.handleResize();
+  }
+
+  handleResize() {
+    if (this.state.playable && window.innerWidth < 800) {
+      this.setState({ playable: false, comment: "Sorry! You'll need to have a bigger screen to play Yahtzee." });
+    }
+    else if (!this.state.playable && window.innerWidth >= 800) {
+      this.setState({ playable: true, comment: "Wanna have a match? Start by rolling the dice." });
+    }
+  }
+
   componentWillUnmount() {
     this.source.cancel();
+    window.removeEventListener("resize", this.handleResize.bind(this));
   }
 
   cancelToken = axios.CancelToken;
@@ -632,194 +648,198 @@ class Yahtzee extends React.Component {
       <div className="main-wrapper width-exception">
         <h2>Yahtzee</h2>
         <p>{this.state.comment}</p>
-        <div className={this.determineHighscoreDisplay()}>
-          <h3 className="highscore-header">Final Score: {this.determineGrandTotalScore()}</h3>
-          <div className="highscores">
-            { this.state.highscores.map((hs, idx) => (
-                <p className="highscore">
-                  <span><b>{idx + 1}.</b></span>
-                  <span><b>{hs.nick}</b></span>
-                  <span><b>{hs.score.toString().padStart(3, "0")}</b></span>
-                </p>
-              ))
-            }
-          </div>
-          <BasicForm
-            handleSubmit={this.postHighscore}
-            inputValue={this.state.nick}
-            handleChange={this.handleNickChange}
-            buttonDesc="Submit"
-          />
-        </div>
-        <div className="yahtzee">
-          <div className="dice-areas">
-            <div className="diceholder">
-              <div className="dice-area">
-                <div className="dice-area-title">Locked Dice</div>
-                <div className="locked-dice">
-                  { this.state.hideDice ?
-                    <div></div> :
-                    this.state.lockedDice.map((die) => (
-                      <YahtzeeDie key={die.id} number={die.number} disappearing={this.state.disappearingLockedDice.includes(die.id)} lockFunc={() => this.unlockDie(die.id)} ></YahtzeeDie>
-                    ))
-                  }
-                </div>
-              </div>
-              <div className="dice-area">
-                <div className="dice-area-title">Free Dice</div>
-                <div className="free-dice">
-                  { this.state.hideDice ?
-                    <div></div> :
-                    this.state.freeDice.map((die) => (
-                      <YahtzeeDie key={die.id} number={die.number} disappearing={this.state.disappearingFreeDice.includes(die.id)} lockFunc={() => this.lockDie(die.id)}></YahtzeeDie>
-                    ))
-                  }
-                </div>
-              </div>
-            </div>
-            <div className="cup-area">
-              <div className={"cup" + (this.state.rolls === 3 ? " cup-disabled" : " cup-enabled")} onClick={() => this.rollDice()}>
-                { this.state.rolls !== 3 ?
-                  <div className="rollnumber">{"Roll " + (this.state.rolls + 1)}</div> :
-                  <div className="cross-base">
-                    <div className="cross-1"></div>
-                    <div className="cross-2"></div>
-                    <div className="cross-3"></div>
-                    <div className="cross-4"></div>
-                  </div>
+        { !this.state.playable ? <div></div> :
+          <div>
+            <div className={this.determineHighscoreDisplay()}>
+              <h3 className="highscore-header">Final Score: {this.determineGrandTotalScore()}</h3>
+              <div className="highscores">
+                { this.state.highscores.map((hs, idx) => (
+                    <p className="highscore">
+                      <span><b>{idx + 1}.</b></span>
+                      <span><b>{hs.nick}</b></span>
+                      <span><b>{hs.score.toString().padStart(3, "0")}</b></span>
+                    </p>
+                  ))
                 }
-                <div className="cup-felt"></div>
-                <div className="cup-base"></div>
+              </div>
+              <BasicForm
+                handleSubmit={this.postHighscore}
+                inputValue={this.state.nick}
+                handleChange={this.handleNickChange}
+                buttonDesc="Submit"
+              />
+            </div>
+            <div className="yahtzee">
+              <div className="dice-areas">
+                <div className="diceholder">
+                  <div className="dice-area">
+                    <div className="dice-area-title">Locked Dice</div>
+                    <div className="locked-dice">
+                      { this.state.hideDice ?
+                        <div></div> :
+                        this.state.lockedDice.map((die) => (
+                          <YahtzeeDie key={die.id} number={die.number} disappearing={this.state.disappearingLockedDice.includes(die.id)} lockFunc={() => this.unlockDie(die.id)} ></YahtzeeDie>
+                        ))
+                      }
+                    </div>
+                  </div>
+                  <div className="dice-area">
+                    <div className="dice-area-title">Free Dice</div>
+                    <div className="free-dice">
+                      { this.state.hideDice ?
+                        <div></div> :
+                        this.state.freeDice.map((die) => (
+                          <YahtzeeDie key={die.id} number={die.number} disappearing={this.state.disappearingFreeDice.includes(die.id)} lockFunc={() => this.lockDie(die.id)}></YahtzeeDie>
+                        ))
+                      }
+                    </div>
+                  </div>
+                </div>
+                <div className="cup-area">
+                  <div className={"cup" + (this.state.rolls === 3 ? " cup-disabled" : " cup-enabled")} onClick={() => this.rollDice()}>
+                    { this.state.rolls !== 3 ?
+                      <div className="rollnumber">{"Roll " + (this.state.rolls + 1)}</div> :
+                      <div className="cross-base">
+                        <div className="cross-1"></div>
+                        <div className="cross-2"></div>
+                        <div className="cross-3"></div>
+                        <div className="cross-4"></div>
+                      </div>
+                    }
+                    <div className="cup-felt"></div>
+                    <div className="cup-base"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="scoreboard">
+                <YahtzeeTitle first="Upper Section" second="Score" third="P2 Score"></YahtzeeTitle>
+                <YahtzeeRow
+                  title="Ones"
+                  lockedScore={this.state.ones}
+                  score={this.determineOnesScore()}
+                  scoreFunc={this.scoreOnes}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Twos"
+                  lockedScore={this.state.twos}
+                  score={this.determineTwosScore()}
+                  scoreFunc={this.scoreTwos}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Threes"
+                  lockedScore={this.state.threes}
+                  score={this.determineThreesScore()}
+                  scoreFunc={this.scoreThrees}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Fours"
+                  lockedScore={this.state.fours}
+                  score={this.determineFoursScore()}
+                  scoreFunc={this.scoreFours}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Fives"
+                  lockedScore={this.state.fives}
+                  score={this.determineFivesScore()}
+                  scoreFunc={this.scoreFives}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Sixes"
+                  lockedScore={this.state.sixes}
+                  score={this.determineSixesScore()}
+                  scoreFunc={this.scoreSixes}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRowInfo
+                  title="Total Score"
+                  score={this.determineUpperSectionScore()}
+                ></YahtzeeRowInfo>
+                <YahtzeeRowInfo
+                  title="Bonus"
+                  score={this.determineBonusScore()}
+                ></YahtzeeRowInfo>
+                <YahtzeeRowInfo
+                  title="Total"
+                  score={this.determineUpperSectionTotalScore()}
+                ></YahtzeeRowInfo>
+                <YahtzeeTitle first="Lower Section"></YahtzeeTitle>
+                <YahtzeeRow
+                  title="Three of a Kind"
+                  lockedScore={this.state.threeOfAKind}
+                  score={this.determineThreeOfAKindScore()}
+                  scoreFunc={this.scoreThreeOfAKind}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Four of a Kind"
+                  lockedScore={this.state.fourOfAKind}
+                  score={this.determineFourOfAKindScore()}
+                  scoreFunc={this.scoreFourOfAKind}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Full House"
+                  lockedScore={this.state.fullHouse}
+                  score={this.determineFullHouseScore()}
+                  scoreFunc={this.scoreFullHouse}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Small Straight"
+                  lockedScore={this.state.smallStraight}
+                  score={this.determineSmallStraightScore()}
+                  scoreFunc={this.scoreSmallStraight}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Large Straight"
+                  lockedScore={this.state.largeStraight}
+                  score={this.determineLargeStraightScore()}
+                  scoreFunc={this.scoreLargeStraight}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Yahtzee"
+                  lockedScore={this.state.yahtzee}
+                  score={this.determineYahtzeeScore()}
+                  scoreFunc={this.scoreYahtzee}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                <YahtzeeRow
+                  title="Chance"
+                  lockedScore={this.state.chance}
+                  score={this.determineChanceScore()}
+                  scoreFunc={this.scoreChance}
+                  notAllowed={this.state.scoringNotAllowed}
+                ></YahtzeeRow>
+                {/* TODO: do Yahtzee Bonus later <YahtzeeRowInfo
+                  title="Yahtzee Bonus"
+                  ></YahtzeeRowInfo> */}
+                <YahtzeeRowInfo
+                  title="Total Score"
+                  score={this.determineLowerSectionScore()}
+                ></YahtzeeRowInfo>
+                <YahtzeeRowInfo
+                  title="Grand Total"
+                  score={this.determineGrandTotalScore()}
+                ></YahtzeeRowInfo>
               </div>
             </div>
+            <div>
+              <h2>Instructions</h2>
+              <p>Click on the Dice Cup to roll or reroll dice. Three rolls total!</p>
+              <p>Click on dice to lock or unlock them. Only unlocked dice will be rerolled.</p>
+              <p>Click on a field in the score sheet to score it. You can score a field only once!</p>
+              <p>Game ends when all fields have been scored. Aim to score a high total!</p>
+              <p>Explanations for the fields and more detailed rules are available <a target="_blank" rel="noopener noreferrer"href="https://en.wikipedia.org/wiki/Yahtzee#Rules">over here</a>.</p>
+            </div>
           </div>
-          <div className="scoreboard">
-            <YahtzeeTitle first="Upper Section" second="Score" third="P2 Score"></YahtzeeTitle>
-            <YahtzeeRow
-              title="Ones"
-              lockedScore={this.state.ones}
-              score={this.determineOnesScore()}
-              scoreFunc={this.scoreOnes}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Twos"
-              lockedScore={this.state.twos}
-              score={this.determineTwosScore()}
-              scoreFunc={this.scoreTwos}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Threes"
-              lockedScore={this.state.threes}
-              score={this.determineThreesScore()}
-              scoreFunc={this.scoreThrees}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Fours"
-              lockedScore={this.state.fours}
-              score={this.determineFoursScore()}
-              scoreFunc={this.scoreFours}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Fives"
-              lockedScore={this.state.fives}
-              score={this.determineFivesScore()}
-              scoreFunc={this.scoreFives}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Sixes"
-              lockedScore={this.state.sixes}
-              score={this.determineSixesScore()}
-              scoreFunc={this.scoreSixes}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRowInfo
-              title="Total Score"
-              score={this.determineUpperSectionScore()}
-            ></YahtzeeRowInfo>
-            <YahtzeeRowInfo
-              title="Bonus"
-              score={this.determineBonusScore()}
-            ></YahtzeeRowInfo>
-            <YahtzeeRowInfo
-              title="Total"
-              score={this.determineUpperSectionTotalScore()}
-            ></YahtzeeRowInfo>
-            <YahtzeeTitle first="Lower Section"></YahtzeeTitle>
-            <YahtzeeRow
-              title="Three of a Kind"
-              lockedScore={this.state.threeOfAKind}
-              score={this.determineThreeOfAKindScore()}
-              scoreFunc={this.scoreThreeOfAKind}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Four of a Kind"
-              lockedScore={this.state.fourOfAKind}
-              score={this.determineFourOfAKindScore()}
-              scoreFunc={this.scoreFourOfAKind}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Full House"
-              lockedScore={this.state.fullHouse}
-              score={this.determineFullHouseScore()}
-              scoreFunc={this.scoreFullHouse}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Small Straight"
-              lockedScore={this.state.smallStraight}
-              score={this.determineSmallStraightScore()}
-              scoreFunc={this.scoreSmallStraight}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Large Straight"
-              lockedScore={this.state.largeStraight}
-              score={this.determineLargeStraightScore()}
-              scoreFunc={this.scoreLargeStraight}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Yahtzee"
-              lockedScore={this.state.yahtzee}
-              score={this.determineYahtzeeScore()}
-              scoreFunc={this.scoreYahtzee}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            <YahtzeeRow
-              title="Chance"
-              lockedScore={this.state.chance}
-              score={this.determineChanceScore()}
-              scoreFunc={this.scoreChance}
-              notAllowed={this.state.scoringNotAllowed}
-            ></YahtzeeRow>
-            {/* TODO: do Yahtzee Bonus later <YahtzeeRowInfo
-              title="Yahtzee Bonus"
-              ></YahtzeeRowInfo> */}
-            <YahtzeeRowInfo
-              title="Total Score"
-              score={this.determineLowerSectionScore()}
-            ></YahtzeeRowInfo>
-            <YahtzeeRowInfo
-              title="Grand Total"
-              score={this.determineGrandTotalScore()}
-            ></YahtzeeRowInfo>
-          </div>
-        </div>
-        <div>
-          <h2>Instructions</h2>
-          <p>Click on the Dice Cup to roll or reroll dice. Three rolls total!</p>
-          <p>Click on dice to lock or unlock them. Only unlocked dice will be rerolled.</p>
-          <p>Click on a field in the score sheet to score it. You can score a field only once!</p>
-          <p>Game ends when all fields have been scored. Aim to score a high total!</p>
-          <p>Explanations for the fields and more detailed rules are available <a target="_blank" rel="noopener noreferrer"href="https://en.wikipedia.org/wiki/Yahtzee#Rules">over here</a>.</p>
-        </div>
+        }
       </div>
     )
   }
