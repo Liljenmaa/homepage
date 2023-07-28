@@ -47,7 +47,7 @@ class ShoppingList extends React.Component {
     if (this.state.newItem === "")
       return;
 
-    const notDupe = (obj) => obj.content !== this.state.newItem;
+    const notDupe = (obj) => obj.entry !== this.state.newItem;
 
     if (!(this.state.shoppingList.every(notDupe))) {
       this.setState({ newItem: "" });
@@ -55,7 +55,7 @@ class ShoppingList extends React.Component {
     }
 
     const newItem = {
-      content: this.state.newItem
+      entry: this.state.newItem
     }
 
     axios
@@ -63,7 +63,7 @@ class ShoppingList extends React.Component {
       .then(res => this.setState({
         shoppingList: this.state.shoppingList.concat(res.data)
       }))
-      .catch(error => this.setState({
+      .catch(_ => this.setState({
         serverConnection: false
       }))
 
@@ -79,7 +79,7 @@ class ShoppingList extends React.Component {
 
     axios
       .delete(`https://lilj.fi/api/shoppingList/${event.target.id}`)
-      .catch(error =>
+      .catch(_ =>
         alert("The item is already deleted.")
       )
 
@@ -97,14 +97,13 @@ class ShoppingList extends React.Component {
 
 
   render() {
-
     const itemsToShow =
       this.state.visible ?
         this.state.shoppingList.map(object =>
           <ClickableListNode
             key={object.id}
             id={object.id}
-            content={object.content}
+            content={object.entry}
             handleClick={this.removeOne}
           />
         ) : []
