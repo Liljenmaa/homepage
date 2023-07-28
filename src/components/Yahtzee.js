@@ -370,9 +370,19 @@ class Yahtzee extends React.Component {
 
     const dice = this.getAllDice();
     let diceMap = this.makeDiceMap(dice);
-    let amountOfFirstDie = diceMap.values().next().value;
 
-    if (diceMap.size !== 2 || !(amountOfFirstDie === 1 || amountOfFirstDie === 4)) return 0;
+    if (diceMap.size >= 3) return 0;
+
+    let fourValue = 0;
+
+    for (const dieValue of diceMap) {
+      if (dieValue[1] >= 4) {
+        fourValue = dieValue[0];
+        break;
+      }
+    }
+
+    if (fourValue === 0) return 0;
 
     return dice.reduce(
       (acc, curr) => acc + curr,
