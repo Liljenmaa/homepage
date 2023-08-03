@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import Hello from './components/Hello';
 import NavBar from './components/NavBar';
@@ -10,19 +10,21 @@ import Info from './Info';
 import Footer from './components/Footer';
 
 const App = () =>
-  <Router>
+  <BrowserRouter>
     <div>
       <div id="content">
         <Hello />
         <NavBar />
         <br/>
-        <Route path="/home" component={Home}/>
-        <Route path="/info" component={Info}/>
-        <Route path="/gadgets" component={Gadgets}/>
-        <Route render={() => <Redirect to="/home"/>}/>
+        <Routes>
+          <Route path="/" element={<Home /> } />
+          <Route path="/home" element={<Home />} />
+          <Route path="/info" element={<Info />} />
+          <Route path="/gadgets" element={<Gadgets />} />
+        </Routes>
       </div>
       <Footer />
     </div>
-  </Router>
+  </BrowserRouter>
 
 ReactDOM.render(<App />, document.getElementById('root'));

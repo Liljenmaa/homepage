@@ -7,7 +7,7 @@ const Knowledge = () =>
       <li>C (99 and forwards)</li>
       <li>C++ (03 and forwards)</li>
       <li>Java</li>
-      <li>Python (2.7 and >3.0)</li>
+      <li>Python (2.7 and {'>'}3.0)</li>
       <li>Haskell</li>
       <li>Clingo</li>
       <li>SQL (PostgreSQL, ER-models, Relational modeling)</li>
